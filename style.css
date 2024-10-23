@@ -1,0 +1,54 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#container {
+    background-color: #212228;
+    background-image: linear-gradient(#292a30 .1em, transparent .1em), 
+                      linear-gradient(90deg, #292a30 .1em, transparent .1em);
+    background-size: 4em 4em;
+    height: 100vh;
+    position: relative;
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    background-image: url('./seat.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px;
+    cursor: grab;
+    position: absolute;
+    margin-bottom: 10px;
+}
+.card2 {
+    width: 100px;
+    height: 100px;
+    background-image: url('./seat.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px;
+    cursor: grab;
+    position: absolute;
+    margin-bottom: 10px;
+}
+
+
+#backgrond {
+    background-color: #ffffff;
+}
+
+#toolbar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 120px;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
