@@ -1,7 +1,14 @@
 const container = document.getElementById('container');
 const toolbar = document.getElementById('toolbar');
 
+const stage = document.getElementById('stage');
+stage.addEventListener('mousedown', mouseDown);
+
+
+
 let startX, startY, initialX, initialY;
+let isConfirmed = false; // ตัวแปรเก็บสถานะว่าการ์ดถูกบันทึกหรือไม่
+
 
 function mouseDown(e) {
     const card = e.target; // ใช้ e.target เพื่อระบุตัว card ที่ถูกลาก
@@ -57,8 +64,12 @@ cards.forEach(card => {
     card.addEventListener('mousedown', mouseDown);
 });
 
-// เพิ่มฟังก์ชันสร้างสำเนาใหม่ใน toolbar
 toolbar.addEventListener('mousedown', (e) => {
+    if (isConfirmed) {
+        alert('ไม่สามารถสร้างการ์ดใหม่ได้หลังจากบันทึกการ์ดแล้ว');
+        return; // หากบันทึกไปแล้ว จะไม่สามารถลากการ์ดใหม่ออกมาได้
+    }
+
     const originalCard = e.target.closest('.card');
     if (!originalCard) return;
 
@@ -75,4 +86,39 @@ toolbar.addEventListener('mousedown', (e) => {
     newCard.classList.add('dragging');
     document.addEventListener('mousemove', mouseMove);
     document.addEventListener('mouseup', mouseUp.bind(null, newCard)); // ผูก mouseUp กับ card ใหม่
+});
+
+
+confirmButton.addEventListener('click', () => {
+    const cards = document.querySelectorAll('.card');
+
+    // บันทึกตำแหน่งของการ์ดทั้งหมด
+    cards.forEach(card => {
+        const cardPosition = {
+            left: card.style.left,
+            top: card.style.top
+        };
+
+        console.log('ตำแหน่งของการ์ด:', cardPosition); // สามารถเปลี่ยนเป็นการบันทึกในเซิร์ฟเวอร์หรือฐานข้อมูล
+
+        // ลบ event ที่ใช้ในการลากการ์ด
+        card.removeEventListener('mousedown', mouseDown);
+
+        // ปรับเคอร์เซอร์เพื่อให้ชัดเจนว่าการ์ดไม่สามารถลากได้แล้ว
+        card.style.cursor = 'not-allowed';
+    });
+
+    // ล็อคตำแหน่งของเวที
+    const stagePosition = {
+        left: stage.style.left,
+        top: stage.style.top
+    };
+    console.log('ตำแหน่งของเวที:', stagePosition); // บันทึกตำแหน่งของเวที
+    stage.removeEventListener('mousedown', mouseDown); // ลบ event ของการลากเวที
+    stage.style.cursor = 'not-allowed'; // เปลี่ยนเคอร์เซอร์ของเวทีเช่นกัน
+
+    // ตั้งค่าสถานะว่าการ์ดถูกบันทึกแล้ว
+    isConfirmed = true;
+
+    alert('ตำแหน่งของการ์ดและเวทีถูกบันทึกเรียบร้อยแล้ว และไม่สามารถลากการ์ดหรือเวทีใหม่ได้');
 });
